@@ -1,0 +1,67 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.5.10.RELEASE")
+    }
+}
+plugins {
+    id "io.franzbecker.gradle-lombok" version "1.8"
+    id "at.comm_unity.gradle.plugins.jpamodelgen" version "1.1.4"
+
+}
+
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'eclipse'
+apply plugin: 'org.springframework.boot'
+
+
+
+jar {
+    baseName = 'connect-dpp'
+    version = '3.0.0'
+}
+
+bootRepackage {
+    mainClass = 'com.dpp.Application'
+}
+
+repositories {
+    mavenCentral()
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+
+dependencies {
+    compile('org.springframework.boot:spring-boot-starter-thymeleaf')
+    compile('org.springframework.boot:spring-boot-starter-data-jpa')
+
+    compile('io.springfox:springfox-swagger2:2.5.0')
+    compile('io.springfox:springfox-swagger-ui:2.5.0')
+
+    compile('org.projectlombok:lombok:1.16.20') { force = true }
+    compile("org.springframework:spring-jdbc")
+    runtime "com.h2database:h2"
+
+    compile 'me.xdrop:fuzzywuzzy:1.1.10'
+
+    compile('io.github.benas:random-beans:3.2.0')
+    compile group: 'com.opencsv', name: 'opencsv', version: '3.7'
+    // https://mvnrepository.com/artifact/com.fasterxml.jackson.dataformat/jackson-dataformat-csv
+    compile group: 'com.fasterxml.jackson.dataformat', name: 'jackson-dataformat-csv', version: '2.9.5'
+
+
+    runtime('org.springframework.boot:spring-boot-devtools')
+
+    testCompile("org.springframework.boot:spring-boot-starter-test")
+}
+
+// The following closure demonstrates some of the configuration defaults and is not necessary.
+jpaModelgen {
+    library = "org.hibernate:hibernate-jpamodelgen:4.3.8.Final"
+    jpaModelgenSourcesDir = "src/main/java"
+}

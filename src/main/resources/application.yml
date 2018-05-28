@@ -1,0 +1,37 @@
+spring:
+  http:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+  h2:
+    console:
+      enabled: true
+  datasource:
+    dataSourceClassName: org.h2.jdbcx.JdbcDataSource
+    url: jdbc:h2:mem:orders;DB_CLOSE_DELAY=-1
+    databaseName: orders
+    serverName:
+    username:
+    password:
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    database: H2
+    openInView: false
+    show_sql: true
+    generate-ddl: true
+    hibernate:
+      ddl-auto: create-drop
+      naming-strategy: org.hibernate.cfg.EJB3NamingStrategy
+    properties:
+      hibernate.cache.use_query_cache: false
+      hibernate.generate_statistics: true
+  mandatory-file-encoding: UTF-8
+logging:
+  level:
+    org:
+      hibernate:
+        type: trace
+  file: dpp.log
+  path: logs
+
