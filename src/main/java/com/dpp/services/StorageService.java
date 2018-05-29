@@ -12,7 +12,7 @@ public interface StorageService {
 
     void init();
 
-    List<OrderDtoResponse> store(MultipartFile file);
+    Long store(MultipartFile file);
 
     Stream<Path> loadAll();
 
