@@ -3,13 +3,18 @@ package com.dpp.entity;
 import com.dpp.storage.StorageException;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.Strings;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 import lombok.Data;
@@ -46,11 +51,187 @@ public class OrderDtoResponse {
           "Наличие финансовых ресурсов",
           "Право собственности");
 
+  private static final List<String> addresses = Arrays.asList("Республика Адыгея",
+      "Республика Башкортостан",
+      "Республика Бурятия",
+      "Республика Алтай",
+      "Республика Дагестан",
+      "Республика Ингушетия",
+      "Кабардино-Балкарская Республика",
+      "Республика Калмыкия",
+      "Республика Карачаево-Черкесия",
+      "Республика Карелия",
+      "Республика Коми",
+      "Республика Марий Эл",
+      "Республика Мордовия",
+      "Республика Саха (Якутия)",
+      "Республика Северная Осетия — Алания",
+      "Республика Татарстан",
+      "Республика Тыва",
+      "Удмуртская Республика",
+      "Республика Хакасия",
+      "Чувашская Республика",
+      "Алтайский край",
+      "Краснодарский край",
+      "Красноярский край",
+      "Приморский край",
+      "Ставропольский край",
+      "Хабаровский край",
+      "Амурская область",
+      "Архангельская область",
+      "Астраханская область",
+      "Белгородская область",
+      "Брянская область",
+      "Владимирская область",
+      "Волгоградская область",
+      "Вологодская область",
+      "Воронежская область",
+      "Ивановская область",
+      "Иркутская область",
+      "Калининградская область",
+      "Калужская область",
+      "Камчатский край",
+      "Кемеровская область",
+      "Кировская область",
+      "Костромская область",
+      "Курганская область",
+      "Курская область",
+      "Ленинградская область",
+      "Липецкая область",
+      "Магаданская область",
+      "Московская область",
+      "Мурманская область",
+      "Нижегородская область",
+      "Новгородская область",
+      "Новосибирская область",
+      "Омская область",
+      "Оренбургская область",
+      "Орловская область",
+      "Пензенская область",
+      "Пермский край",
+      "Псковская область",
+      "Ростовская область",
+      "Рязанская область",
+      "Самарская область",
+      "Саратовская область",
+      "Сахалинская область",
+      "Свердловская область",
+      "Смоленская область",
+      "Тамбовская область",
+      "Тверская область",
+      "Томская область",
+      "Тульская область",
+      "Тюменская область",
+      "Ульяновская область",
+      "Челябинская область",
+      "Забайкальский край",
+      "Ярославская область",
+      "Москва",
+      "Санкт-Петербург",
+      "Еврейская автономная область",
+      "Республика Крым",
+      "Ненецкий автономный округ",
+      "Ханты-Мансийский автономный округ Югра",
+      "Чукотский автономный округ",
+      "Ямало-Ненецкий автономный округ",
+      "Севастополь",
+      "Байконур",
+      "Чеченская республика");
+
+  private static final List<Integer> codeRegions = Arrays.asList(
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31,
+      32,
+      33,
+      34,
+      35,
+      36,
+      37,
+      38,
+      39,
+      40,
+      41,
+      42,
+      43,
+      44,
+      45,
+      46,
+      47,
+      48,
+      49,
+      50,
+      51,
+      52,
+      53,
+      54,
+      55,
+      56,
+      57,
+      58,
+      59,
+      60,
+      61,
+      62,
+      63,
+      64,
+      65,
+      66,
+      67,
+      68,
+      69,
+      70,
+      71,
+      72,
+      73,
+      74,
+      75,
+      76,
+      77,
+      78,
+      79,
+      82,
+      83,
+      86,
+      87,
+      89,
+      92,
+      94,
+      95);
+
+
   private static final List<String> fzList = Arrays.asList("223", "44", "94");
 
   @Id
-  @JsonProperty("product_code")
-  private String code;
+  @GeneratedValue(strategy= GenerationType.AUTO)
+  private Integer code;
 
   @JsonProperty("product")
   @Column(length = 100000)
@@ -78,7 +259,7 @@ public class OrderDtoResponse {
   private Integer requirements;
 
   @JsonProperty("inn")
-  private Integer inn;
+  private BigInteger inn;
 
   public static Builder newBuilder() {
     return new OrderDtoResponse().new Builder();
@@ -89,16 +270,9 @@ public class OrderDtoResponse {
     private Builder() {
     }
 
-    public Builder setCode(String code) {
-      if (Strings.isNullOrEmpty(code) || code.equalsIgnoreCase("Код")) {
-        throw new StorageException("Code is not valid");
-      }
-      OrderDtoResponse.this.code = code;
-      return this;
-    }
 
     public Builder setInn(String inn) {
-      OrderDtoResponse.this.inn = Integer.valueOf(inn);
+      OrderDtoResponse.this.inn = BigInteger.valueOf(Long.valueOf(inn));
       return this;
     }
 
@@ -113,6 +287,14 @@ public class OrderDtoResponse {
         }
       }
       return this;
+    }
+
+    private Integer getKey(ExtractedResult extractedResult) {
+      Map<String, Integer> map = new HashMap<>();
+      for (int i = 0; i < addresses.size(); i++) {
+        map.put(addresses.get(i), codeRegions.get(i));
+      }
+      return map.get(extractedResult.getString());
     }
 
     public Builder setProduct(String objectOfOrder) {
@@ -143,6 +325,22 @@ public class OrderDtoResponse {
 
       return this;
     }
+
+    public Builder setRegion(String inn, String region) {
+      try {
+        OrderDtoResponse.this.region = Integer.valueOf(inn.trim().substring(0, 2));
+      } catch (Exception e) {
+        final List<ExtractedResult> search = FuzzySearch
+            .extractTop(region, addresses, 1);
+        if (search.get(0).getScore() >= 90) {
+          OrderDtoResponse.this.region = getKey(search.get(0));
+        } else {
+          OrderDtoResponse.this.region = 0;
+        }
+      }
+      return this;
+    }
+
 
     public Builder setInitialPrice(String initialPrice) {
       String number = initialPrice.replaceAll("[,]", ".").replaceAll("[^0-9|.]", "").trim();

@@ -28,7 +28,6 @@ public class DataLoaderServiceImpl implements DataLoaderService {
       CSVReader csvReader = new CSVReader(flr);
       // Set column mapping strategy
       List<OrderEntity> list = csv.parse(setColumMapping(), csvReader);
-      log.info(list.toString());
       list.remove(0);
       return processingService.dataPreparationExecute(list);
     } catch (IOException e) {

@@ -21,6 +21,6 @@ public class OrderSearchRequest {
 
   private List<Integer> requirements;
 
-  private Integer inn;
+  private BigInteger inn;
 
 }

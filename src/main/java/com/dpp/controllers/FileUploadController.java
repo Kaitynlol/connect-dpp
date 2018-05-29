@@ -1,5 +1,7 @@
 package com.dpp.controllers;
 
+import com.dpp.services.InfoDto;
+import com.dpp.services.ResponseService;
 import java.io.IOException;
 import java.util.stream.Collectors;
 
@@ -30,12 +32,12 @@ import com.dpp.storage.StorageFileNotFoundException;
 @Slf4j
 public class FileUploadController {
 
-  private final StorageService storageService;
+  @Autowired
+  private StorageService storageService;
 
   @Autowired
-  public FileUploadController(StorageService storageService) {
-    this.storageService = storageService;
-  }
+  private ResponseService responseService;
+
 
   @GetMapping("/")
   public String listUploadedFiles(Model model) throws IOException {
@@ -66,8 +68,13 @@ public class FileUploadController {
           "Particular file isn't csv formmatted: " + file.getOriginalFilename());
     }
     log.info(storageService.store(file).toString());
-    redirectAttributes.addFlashAttribute("message",
-        "You successfully uploaded " + file.getOriginalFilename() + "!");
+    InfoDto info = responseService.getInfo();
+    redirectAttributes.addFlashAttribute("persisted",
+        info.getAvailable());
+    redirectAttributes.addFlashAttribute("errors",
+        info.getErrors());
+
+    redirectAttributes.addFlashAttribute("file", file.getOriginalFilename() + "!");
 
     return "redirect:/";
   }

@@ -40,4 +40,6 @@ public class OrderEntity {
 
   private String requirementsForMembers;
 
+  private String procedureType;
+
 }

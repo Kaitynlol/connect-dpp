@@ -50,7 +50,7 @@ public class OrderDataController {
       @ApiParam(value = "requirements", required = false
       ) @RequestParam(required = false) List<Integer> requirements,
       @ApiParam(value = "inn", required = false
-      ) @RequestParam(required = false) Integer inn)
+      ) @RequestParam(required = false) BigInteger inn)
       throws IOException {
     OrderSearchRequest request = new OrderSearchRequest(region, minInitialPrice, maxInitialPrice,
         purchaseCode, lawCode, requirements, inn);

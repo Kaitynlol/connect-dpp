@@ -1,9 +1,17 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <body>
 
-	<div th:if="${message}">
-		<h2 th:text="${message}"/>
+	<div th:if="${file}">
+		<h2 th:text="${file}"/>
 	</div>
+
+  <div th:if="${persisted}">
+    <h2 th:text="${persisted}"/>
+  </div>
+
+  <div th:if="${errors}">
+    <h2 th:text="${errors}"/>
+  </div>
 
 	<div>
 		<form method="POST" enctype="multipart/form-data" action="/">

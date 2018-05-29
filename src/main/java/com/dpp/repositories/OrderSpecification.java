@@ -46,7 +46,7 @@ public class OrderSpecification implements Specification<OrderDtoResponse> {
       predicates.add(cb.equal(root.get(OrderDtoResponse_.lawCode), criteria.getLawCode()));
     }
 
-    if (criteria.getInn() != null && criteria.getInn() != 0) {
+    if (criteria.getInn() != null && BigInteger.ZERO.compareTo(criteria.getInn()) != 0) {
       predicates.add(cb.equal(root.get(OrderDtoResponse_.inn), criteria.getInn()));
     }
 

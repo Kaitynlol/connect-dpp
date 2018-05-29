@@ -10,6 +10,7 @@ import io.github.benas.randombeans.api.EnhancedRandom;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
+import javax.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +24,9 @@ public class DataProcessingServiceImpl implements DataProcessingService {
   @Autowired
   private OrderRepository orderRepository;
 
+  @Autowired
+  private ResponseService responseService;
+
 
   private final EnhancedRandom enhancedRandom =
       EnhancedRandomBuilder.aNewEnhancedRandomBuilder().maxCollectionSize(15)
@@ -30,6 +34,7 @@ public class DataProcessingServiceImpl implements DataProcessingService {
   private Transaction transaction;
 
   @Override
+  @Transactional
   public List<OrderDtoResponse> dataPreparationExecute(List<OrderEntity> list) {
     List<OrderDtoResponse> preparedList = new ArrayList<>();
     AtomicInteger countErrors = new AtomicInteger();
@@ -37,31 +42,27 @@ public class DataProcessingServiceImpl implements DataProcessingService {
       if (e.getCode() != null && !(e.getCode()).equalsIgnoreCase("'\\uFEFF'")) {
         OrderDtoResponse value;
         try {
-          value = OrderDtoResponse.newBuilder().setCode(e.getCode())
-              .setProduct(e.getIdOfTrade())
-              .withLawCode(e.getFz()).setRegion(e.getInn())
+          value = OrderDtoResponse.newBuilder()
+              .setProduct(e.getObjectOfOrder())
+              .withLawCode(e.getFz()).setRegion(e.getInn(), e.getAddress())
               .setFinalPrice(e.getBet(), e.getTradeResults())
               .setInitialPrice(e.getStartingPrice())
               .setRequirements(e.getRequirementsForMembers())
-              .withPurchaseCode(e.getObjectOfOrder()).setInn(e.getInn())
+              .withPurchaseCode(e.getProcedureType()).setInn(e.getInn())
               .build();
         } catch (Exception exc) {
-          log.error(exc.getMessage());
+          log.error(exc.getMessage()+ "for entry: "+e.getCode());
           countErrors.getAndIncrement();
           value = null;
         }
         if (value != null) {
-          log.debug(value.toString());
-          preparedList.add(orderRepository.save(value));
+          preparedList.add(value);
         }
-
       }
-      log.info("==============================================");
-      log.info("Записей подготовлено: "+preparedList.size());
-      log.info("Колличество ошибок: "+countErrors);
-      log.info("==============================================");
-
     });
+    responseService
+        .setInfo(new InfoDto(String.valueOf(preparedList.size()), countErrors.toString()));
+    orderRepository.save(preparedList);
     return preparedList;
   }
 
