@@ -1,13 +1,11 @@
 package com.dpp.services;
 
-import com.dpp.entity.OrderDtoResponse;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.List;
 import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +34,7 @@ public class FileSystemStorageService implements StorageService {
   }
 
   @Override
-  public List<OrderDtoResponse> store(MultipartFile file) {
+  public Long store(MultipartFile file) {
     String filename = StringUtils.cleanPath(file.getOriginalFilename());
     try {
       if (file.isEmpty()) {

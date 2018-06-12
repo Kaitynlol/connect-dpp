@@ -54,6 +54,11 @@ dependencies {
     // https://mvnrepository.com/artifact/com.fasterxml.jackson.dataformat/jackson-dataformat-csv
     compile group: 'com.fasterxml.jackson.dataformat', name: 'jackson-dataformat-csv', version: '2.9.5'
 
+    // https://mvnrepository.com/artifact/io.reactivex.rxjava2/rxjava
+    compile group: 'io.reactivex.rxjava2', name: 'rxjava', version: '2.0.6'
+
+    compileOnly 'org.projectlombok:lombok:1.18.0'
+
 
     runtime('org.springframework.boot:spring-boot-devtools')
 

@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface DataProcessingService {
 
-  List<OrderDtoResponse> dataPreparationExecute(List<OrderEntity> list);
+  Long dataPreparationExecute(List<OrderEntity> list);
 
   List<OrderDtoResponse> getAvailableOrders();
 

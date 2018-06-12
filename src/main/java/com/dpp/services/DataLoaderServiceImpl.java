@@ -1,6 +1,5 @@
 package com.dpp.services;
 
-import com.dpp.entity.OrderDtoResponse;
 import com.dpp.entity.OrderEntity;
 import com.dpp.storage.StorageException;
 import com.opencsv.CSVReader;
@@ -22,7 +21,7 @@ public class DataLoaderServiceImpl implements DataLoaderService {
   private DataProcessingService processingService;
 
   @Override
-  public List<OrderDtoResponse> dataCsvLoadInDataBase(String fileName) throws StorageException {
+  public Long dataCsvLoadInDataBase(String fileName) throws StorageException {
     CsvToBean<OrderEntity> csv = new CsvToBean<OrderEntity>();
     try (FileReader flr = new FileReader(fileName)) {
       CSVReader csvReader = new CSVReader(flr);
