@@ -33,12 +33,13 @@ public class DataProcessingServiceImpl implements DataProcessingService {
           .build();
   private Transaction transaction;
 
+
   @Override
   @Transactional
   public List<OrderDtoResponse> dataPreparationExecute(List<OrderEntity> list) {
     List<OrderDtoResponse> preparedList = new ArrayList<>();
     AtomicInteger countErrors = new AtomicInteger();
-    list.forEach(e -> {
+    list.parallelStream().forEach(e -> {
       if (e.getCode() != null && !(e.getCode()).equalsIgnoreCase("'\\uFEFF'")) {
         OrderDtoResponse value;
         try {
